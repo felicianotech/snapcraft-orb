@@ -1,0 +1,20 @@
+version: 2.1
+description: "Common CircleCI tasks for Snapcraft, a Linux package manager."
+
+executors:
+  default:
+    parameters:
+      version:
+        description: "The Snapcraft Docker tag."
+        type: string
+        default: "stable"
+    docker:
+      - image: cibuilds/snapcraft:<< parameters.version >>
+
+commands:
+  login:
+    description: "Logs in to the Snapcraft Store."
+    steps:
+      - run:
+          name: "Login to Snapcraft.io"
+          command: echo $SNAPCRAFT_LOGIN_FILE | base64 --decode --ignore-garbage > .snapcraft/snapcraft.cfg
